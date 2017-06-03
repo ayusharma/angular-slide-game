@@ -1,0 +1,15 @@
+/**
+ * Datashop Notification - Notificaion Service for Datashop.
+ * @author Ayush Sharma
+ * @version v0.0.1
+ * @link 
+ * @license MIT
+ */
+span {
+  padding: 10px;
+  display: inline-block;
+  width: 20px;
+  background-color: #d7d4f0;
+  margin: 2px;
+  text-align: center;
+  cursor: pointer; }
