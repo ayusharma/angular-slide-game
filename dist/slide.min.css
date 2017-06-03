@@ -5,11 +5,21 @@
  * @link 
  * @license MIT
  */
-span {
-  padding: 10px;
-  display: inline-block;
-  width: 20px;
-  background-color: #d7d4f0;
-  margin: 2px;
-  text-align: center;
-  cursor: pointer; }
+body {
+  background-color: #f3e1c9; }
+  body .tile {
+    padding: 25px;
+    display: inline-block;
+    background-color: #FF7373;
+    margin: 2px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    border-radius: 2px;
+    width: 90px; }
+  body .paddle {
+    background-color: #FF3F00; }
+  body .time-field {
+    font-size: 35px; }
