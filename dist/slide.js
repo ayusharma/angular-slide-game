@@ -134,7 +134,8 @@ app.controller('slideCtrl', ["$scope", "$interval", "Game", "gameModes", "save",
    */
   $scope.$watch('game.grid', function () {
     if (_.isEqual($scope.game.grid, game.solve())) {
-      alert('You have solved the it');
+      alert('Congrats ! You have solved it');
+      save.remove();
     }
   });
 
@@ -357,6 +358,13 @@ app.service('save', function () {
   }
 
   /**
+   * remove - delete data from localStorage
+   */
+  function remove() {
+    localStorage.removeItem(this.id);
+  }
+
+  /**
    * get - get data form localStorage
    *
    * @return {object}  saved data from localStorage
@@ -368,4 +376,5 @@ app.service('save', function () {
   this.id = 'slideGame';
   this.set = set;
   this.get = get;
+  this.remove = remove;
 });
