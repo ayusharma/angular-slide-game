@@ -1,5 +1,4 @@
-<html lang="en"
-  ng-app="slideApp">
+<html lang="en" ng-app="slideApp">
 
   <head>
     <title>Angular Slide Game</title>
@@ -30,7 +29,7 @@
           <div class="panel panel-default">
             <div class="panel-heading">Control Panel</div>
             <div class="panel-body">
-              <button type="button" class="btn btn-primary" ng-show="solveButton()" ng-click="solve()">Solve</button>
+              <!-- <button type="button" class="btn btn-primary" ng-show="solveButtonStatus()" ng-click="solve()">Solve</button> -->
               <button type="button" class="btn btn-primary" ng-click="newGame(game.mode)">New Game</button>
             </div>
           </div>
@@ -38,10 +37,8 @@
           <div class="panel panel-default">
             <div class="panel-heading">Levels</div>
             <div class="panel-body">
-              <!-- <div class=""> -->
                 <button type="button" class="btn btn-primary" style="margin-right: 4px"
                   ng-click="newGame(key)" ng-repeat="(key, value) in game.modes">{{key}}</button>
-              <!-- </div> -->
             </div>
           </div>
 

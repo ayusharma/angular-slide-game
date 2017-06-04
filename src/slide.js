@@ -47,6 +47,10 @@ app.controller('slideCtrl', function ($scope, $interval, Game, gameModes,
   var delay = 1000;
   var timerInstance;
 
+  /**
+   * closeevent - fires when tab / winow is closed.
+   *
+   */
   function closeevent() {
     var data = {
       model: $scope.game.grid,
@@ -60,7 +64,8 @@ app.controller('slideCtrl', function ($scope, $interval, Game, gameModes,
   $scope.init = function () {
     var savedGame = save.get();
     if (savedGame) {
-      $scope.newGame(savedGame.mode, savedGame.model, savedGame.history, savedGame.time);
+      $scope.newGame(savedGame.mode, savedGame.model,
+          savedGame.history, savedGame.time);
     } else {
       $scope.newGame();
     }
@@ -70,24 +75,32 @@ app.controller('slideCtrl', function ($scope, $interval, Game, gameModes,
   $scope.game.history = [];
   $scope.game.modes = gameModes.modes;
 
+  /**
+   * newGame - Define new game.
+   */
   $scope.newGame = function (mode, model, history, time) {
     var type = gameModes.get(mode);
     $scope.game.mode = mode || gameModes.defaultMode;
-    game = new Game(type.row, type.column);
     $scope.game.history = history || [];
-    $scope.game.grid = model || game.newGame();
-    localStorage.removeItem('slide');
     $scope.game.elasped = time || type.elasped;
+    game = new Game(type.row, type.column);
+    $scope.game.grid = model || game.newGame();
     if (timerInstance) {
       $interval.cancel(timerInstance);
     }
     timerInstance = $interval(function () {
       $scope.game.elasped -= delay;
     }, delay);
+    // saves the first time data.
     closeevent();
   };
 
-
+  /**
+   * move - move the paddle
+   *
+   * @param  {number} x description
+   * @param  {number} y description
+   */
   $scope.move = function (x, y) {
     game.move($scope.game.grid, x, y).then(function (resp) {
       $scope.game.grid = resp.model;
@@ -95,19 +108,32 @@ app.controller('slideCtrl', function ($scope, $interval, Game, gameModes,
     });
   };
 
+  /**
+   * solve - autosolve the game
+   */
   $scope.solve = function () {
     $scope.game.grid = game.solve();
   };
 
-  $scope.solveButton = function () {
-    return Object.keys($scope.game.grid).length;
-  };
+  /**
+   * sosolveButton - set visibility of solve button
+   */
+  // $scope.solveButton = function () {
+  //   return Object.keys($scope.game.grid).length;
+  // };
 
+  /**
+   * Keep watching the model.
+   */
   $scope.$watch('game.grid', function () {
     if (_.isEqual($scope.game.grid, game.solve())) {
       alert('You have solved the it');
     }
   });
+
+  /**
+   * On windoe close
+   */
   window.onbeforeunload = closeevent;
 });
 
@@ -167,7 +193,6 @@ app.factory('Game', function ($q) {
     this.currentModel = model;
     return model;
   }
-
 
   /**
    * pivot - it is the blank tile

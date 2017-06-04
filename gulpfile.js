@@ -12,7 +12,6 @@ var addsrc = require('gulp-add-src');
 var order = require('gulp-order');
 var packageName = 'slide';
 var del = require('del');
-// var protractor = require('gulp-protractor').protractor;
 
 var pkg = require('./package.json');
 var banner = ['/**',
@@ -71,7 +70,7 @@ gulp.task('service', function () {
    .pipe(header(banner, { pkg: pkg }))
    .pipe(gulp.dest('dist'))
 
-   // .pipe(uglify())
+   .pipe(uglify())
    .pipe(rename({
      suffix: '.min'
    }))
