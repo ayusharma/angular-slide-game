@@ -23,29 +23,20 @@ body {
         font-size: 35px;
     }
 }
-//
-// .tile {
-//     position:relative;
-//     margin-bottom:-1px;
-//     width: 300px;
-//     text-align:center;
-//     border:1px solid black;
-//     line-height:40px;
-// }
 
 .tile.ng-enter, .paddle.ng-enter {
-    animation: 0.2s item-enter;
-    -webkit-animation: 0.2s item-enter;
+    animation: 0.1s item-enter;
+    -webkit-animation: 0.1s item-enter;
 }
 
 .tile.ng-leave, .paddle.ng-leave {
-    animation: 0.2s item-leave;
-    -webkit-animation: 0.2s item-leave;
+    animation: 0.1s item-leave;
+    -webkit-animation: 0.1s item-leave;
 }
 
 .tile.ng-move, .paddle.ng-move {
-    animation: 0.2s item-move;
-    -webkit-animation: 0.2s item-move;
+    animation: 0.1s item-move;
+    -webkit-animation: 0.1s item-move;
 }
 @keyframes item-enter {
     0% {

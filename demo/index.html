@@ -16,6 +16,9 @@
 
   <body>
     <div class="container" ng-controller="slideCtrl" ng-init="init()">
+      <div class="alert alert-success" role="alert" style="margin-top: 30px;" ng-show="game.solved">
+        Well done! You have successfully solved it.
+      </div>
       <div class="row" style="margin-top: 30px;">
         <div class="col-md-12 text-center">
           <div ng-repeat="(key, value) in game.grid" class="row-tile">
@@ -29,8 +32,8 @@
           <div class="panel panel-default">
             <div class="panel-heading">Control Panel</div>
             <div class="panel-body">
-              <!-- <button type="button" class="btn btn-primary" ng-show="solveButtonStatus()" ng-click="solve()">Solve</button> -->
               <button type="button" class="btn btn-primary" ng-click="newGame(game.mode)">New Game</button>
+              <button type="button" class="btn btn-warning" ng-click="solve()">Solve</button>
             </div>
           </div>
 
@@ -56,8 +59,9 @@
             <div class="panel-heading">Moves: {{game.history.length}}</div>
             <div class="panel-body">
               <p ng-repeat="move in game.history track by $index">
-                Tile {{game.move.value}} moved from {{move.old.x}} {{move.old.y}} to {{move.new.pos.x}}
-                {{move.new.pos.x}} and pivot tile moved in {{move.new.direaction}} direction.
+                Tile {{game.move.value}} moved from {{move.old.x}} {{move.old.y}} to
+                {{move.new.pos.x}} {{move.new.pos.x}} and
+                pivot tile moved in {{move.new.direaction}} direction.
               </p>
             </div>
           </div>

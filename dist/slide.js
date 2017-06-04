@@ -87,6 +87,7 @@ app.controller('slideCtrl', ["$scope", "$interval", "Game", "gameModes", "save",
    */
   $scope.newGame = function (mode, model, history, time) {
     var type = gameModes.get(mode);
+    $scope.game.solved = false;
     $scope.game.mode = mode || gameModes.defaultMode;
     $scope.game.history = history || [];
     $scope.game.elasped = time || type.elasped;
@@ -125,7 +126,7 @@ app.controller('slideCtrl', ["$scope", "$interval", "Game", "gameModes", "save",
   /**
    * sosolveButton - set visibility of solve button
    */
-  // $scope.solveButton = function () {
+  // $scope.solveButtonStatus = function () {
   //   return Object.keys($scope.game.grid).length;
   // };
 
@@ -134,8 +135,9 @@ app.controller('slideCtrl', ["$scope", "$interval", "Game", "gameModes", "save",
    */
   $scope.$watch('game.grid', function () {
     if (_.isEqual($scope.game.grid, game.solve())) {
-      alert('Congrats ! You have solved it');
+      $scope.game.solved = true;
       save.remove();
+      $interval.cancel(timerInstance);
     }
   });
 
