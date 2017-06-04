@@ -16,7 +16,7 @@
   </head>
 
   <body>
-    <div class="container" ng-controller="slideCtrl" ng-init="newGame()">
+    <div class="container" ng-controller="slideCtrl" ng-init="init()">
       <div class="row" style="margin-top: 30px;">
         <div class="col-md-12 text-center">
           <div ng-repeat="(key, value) in game.grid" class="row-tile">
@@ -30,7 +30,7 @@
           <div class="panel panel-default">
             <div class="panel-heading">Control Panel</div>
             <div class="panel-body">
-              <button type="button" class="btn btn-primary" ng-hide="true" ng-click="solve()">Solve</button>
+              <button type="button" class="btn btn-primary" ng-show="solveButton()" ng-click="solve()">Solve</button>
               <button type="button" class="btn btn-primary" ng-click="newGame(game.mode)">New Game</button>
             </div>
           </div>
@@ -58,7 +58,7 @@
           <div class="panel panel-default">
             <div class="panel-heading">Moves: {{game.history.length}}</div>
             <div class="panel-body">
-              <p ng-repeat="move in game.history">
+              <p ng-repeat="move in game.history track by $index">
                 Tile {{game.move.value}} moved from {{move.old.x}} {{move.old.y}} to {{move.new.pos.x}}
                 {{move.new.pos.x}} and pivot tile moved in {{move.new.direaction}} direction.
               </p>
@@ -72,6 +72,8 @@
     src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js"></script>
   <script type="text/javascript"
     src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
+  <script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-animate.js"></script>
   <script type="text/javascript"
     src="slide.min.js"></script>
 

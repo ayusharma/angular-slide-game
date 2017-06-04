@@ -1,7 +1,12 @@
 /* eslint eqeqeq: [0, "smart"] */
 
-var app = angular.module('slideApp', []);
+var app = angular.module('slideApp', ['ngAnimate']);
 
+/**
+ * gameModes - Save game configuraions
+ *
+ * @return {object} this instance of serviec.
+ */
 app.service('gameModes', function () {
   this.modes = {
     amateur: {
@@ -36,28 +41,52 @@ app.service('gameModes', function () {
   };
 });
 
-app.controller('slideCtrl', function ($scope, $interval, Game, gameModes) {
+app.controller('slideCtrl', function ($scope, $interval, Game, gameModes,
+  save) {
   var game;
+  var delay = 1000;
   var timerInstance;
+
+  function closeevent() {
+    var data = {
+      model: $scope.game.grid,
+      history: $scope.game.history,
+      time: $scope.game.elasped,
+      mode: $scope.game.mode
+    };
+    save.set(data);
+  }
+
+  $scope.init = function () {
+    var savedGame = save.get();
+    if (savedGame) {
+      $scope.newGame(savedGame.mode, savedGame.model, savedGame.history, savedGame.time);
+    } else {
+      $scope.newGame();
+    }
+  };
+
   $scope.game = {};
   $scope.game.history = [];
   $scope.game.modes = gameModes.modes;
 
-  $scope.newGame = function (mode) {
+  $scope.newGame = function (mode, model, history, time) {
     var type = gameModes.get(mode);
-    var delay = 1000;
     $scope.game.mode = mode || gameModes.defaultMode;
     game = new Game(type.row, type.column);
-    $scope.game.history.length = 0;
-    $scope.game.grid = game.newGame();
-    $scope.game.elasped = type.elasped;
+    $scope.game.history = history || [];
+    $scope.game.grid = model || game.newGame();
+    localStorage.removeItem('slide');
+    $scope.game.elasped = time || type.elasped;
     if (timerInstance) {
       $interval.cancel(timerInstance);
     }
     timerInstance = $interval(function () {
       $scope.game.elasped -= delay;
     }, delay);
+    closeevent();
   };
+
 
   $scope.move = function (x, y) {
     game.move($scope.game.grid, x, y).then(function (resp) {
@@ -70,11 +99,16 @@ app.controller('slideCtrl', function ($scope, $interval, Game, gameModes) {
     $scope.game.grid = game.solve();
   };
 
+  $scope.solveButton = function () {
+    return Object.keys($scope.game.grid).length;
+  };
+
   $scope.$watch('game.grid', function () {
     if (_.isEqual($scope.game.grid, game.solve())) {
       alert('You have solved the it');
     }
   });
+  window.onbeforeunload = closeevent;
 });
 
 app.factory('Game', function ($q) {
@@ -130,6 +164,7 @@ app.factory('Game', function ($q) {
       model[j] = elem.splice(i, y);
       j += 1;
     }
+    this.currentModel = model;
     return model;
   }
 
@@ -236,6 +271,7 @@ app.factory('Game', function ($q) {
       model[x][y] = model[piv.x][piv.y];
       model[piv.x][piv.y] = temp;
       this.moves += 1;
+      this.currentModel = model;
       deferred.resolve({
         model: model,
         new: mov,
@@ -259,6 +295,7 @@ app.factory('Game', function ($q) {
     this.y = y;
     this.elements = _.range(x * y);
     this.newGame = newGame;
+    this.currentModel = {};
     this.shuffleArray = shuffleArray;
     this.makeModel = makeModel;
     this.pivot = pivot;
@@ -272,37 +309,31 @@ app.factory('Game', function ($q) {
   return Board;
 });
 
-// app.service('time', function ($interval) {
-//   this.delay = 1000;
-//
-//   this.set = function (elasped) {
-//     return $interval(function () {
-//       var elsp;
-//       elsp = elasped - this.delay;
-//       return elsp;
-//     }, this.delay);
-//   };
-//
-//   this.get = function () {
-//     return this.elasped;
-//   };
-//
-//   this.remove = function (instance) {
-//     $interval.cancel(instance);
-//   };
-// });
-// // app.factory('beforeUnload', function ($rootScope, $window) {
-// //     // Events are broadcast outside the Scope Lifecycle
-//   $window.onbeforeunload = function (e) {
-//     var confirmation = {};
-//     var event = $rootScope.$broadcast('onBeforeUnload', confirmation);
-//     if (event.defaultPrevented) {
-//       return confirmation.message;
-//     }
-//   };
-//
-//     $window.onunload = function () {
-//         $rootScope.$broadcast('onUnload');
-//     };
-//     return {};
-// })
+/**
+ * save - save and get data form localStorage
+ *
+ * @return {type}  description
+ */
+app.service('save', function () {
+  /**
+   * set - set data in localStorage
+   *
+   * @param  {object} obj object which it to be inserted.
+   */
+  function set(obj) {
+    localStorage.setItem(this.id, JSON.stringify(obj));
+  }
+
+  /**
+   * get - get data form localStorage
+   *
+   * @return {object}  saved data from localStorage
+   */
+  function get() {
+    return JSON.parse(localStorage.getItem(this.id));
+  }
+
+  this.id = 'slideGame';
+  this.set = set;
+  this.get = get;
+});

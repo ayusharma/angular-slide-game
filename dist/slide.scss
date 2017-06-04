@@ -6,24 +6,117 @@
  * @license MIT
  */
 body {
-  background-color: #f3e1c9;
-  .tile {
-    padding: 25px;
-    display: inline-block;
-    background-color: #FF7373;
-    margin: 2px;
-    text-align: center;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    color: #fff;
-    border-radius: 2px;
-    width: 90px;
-  }
-  .paddle {
-    background-color: #FF3F00;
-  }
-  .time-field {
-    font-size: 35px;
-  }
+    background-color: #f3e1c9;
+
+    .tile {
+        padding: 25px;
+        display: inline-block;
+        background-color: #FF7373;
+        margin: 2px;
+        text-align: center;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        color: #fff;
+        border-radius: 2px;
+        width: 90px;
+    }
+
+    .paddle {
+        background-color: #FF3F00;
+    }
+
+    .time-field {
+        font-size: 35px;
+    }
+}
+//
+// .tile {
+//     position:relative;
+//     margin-bottom:-1px;
+//     width: 300px;
+//     text-align:center;
+//     border:1px solid black;
+//     line-height:40px;
+// }
+
+.tile.ng-enter, .paddle.ng-enter {
+    animation: 0.2s item-enter;
+    -webkit-animation: 0.2s item-enter;
+}
+
+.tile.ng-leave, .paddle.ng-leave {
+    animation: 0.2s item-leave;
+    -webkit-animation: 0.2s item-leave;
+}
+
+.tile.ng-move, .paddle.ng-move {
+    animation: 0.2s item-move;
+    -webkit-animation: 0.2s item-move;
+}
+@keyframes item-enter {
+    0% {
+        opacity: 0;
+        transform: translateY(-30%);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+@keyframes item-leave {
+    0% {
+        opacity: 1;
+        transform: translateY(-30%);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(0);
+    }
+}
+@keyframes item-move {
+    0% {
+        opacity: 0;
+        transform: translateY(-30%);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+@-webkit-keyframes item-enter {
+    0% {
+        opacity: 0;
+        transform: translateY(-30%);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+@-webkit-keyframes item-leave {
+    0% {
+        opacity: 1;
+        transform: translateY(-30%);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(0);
+    }
+}
+@-webkit-keyframes item-move {
+    0% {
+        opacity: 0;
+        transform: translateY(-30%);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
