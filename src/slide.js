@@ -12,7 +12,7 @@ app.service('gameModes', function () {
     beginner: {
       row: 3,
       column: 3,
-      elasped: 360000
+      elasped: 240000
     },
     amateur: {
       row: 4,
@@ -336,9 +336,13 @@ app.factory('Game', function ($q) {
    */
   function isSolvable(arr) {
     // counting empty location from bottom.
-    var arrReverse = angular.copy(arr);
+    var arrReverse = angular.copy(arr).reverse();
+    var arryInv = angular.copy(arr);
+    var inversionCount;
     var emptyLoc = Math.ceil((arrReverse.indexOf(0) + 1) / this.y);
-    var inversionCount = arr.reduce(function (result, value, key, self) {
+    // Removing 0.
+    arryInv.splice(arryInv.indexOf(0), 1);
+    inversionCount = arryInv.reduce(function (result, value, key, self) {
       return self.slice(key).filter(function (b) {
         return b < value;
       }).map(function (b) {
@@ -355,7 +359,7 @@ app.factory('Game', function ($q) {
       // then emptyLoc from bottom would be even
       return (emptyLoc % 2 === 0);
     }
-    // width is even && inversion count is even && emptyLoc would be odd
+    // width is even && inversion count is even then emptyLoc would be odd
     return (emptyLoc % 2 === 1);
   }
 
