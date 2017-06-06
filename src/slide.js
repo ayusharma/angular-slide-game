@@ -325,9 +325,9 @@ app.factory('Game', function ($q) {
   }
 
   /**
-   * funcion inversion - count number of inversion
+   * isSolvable - count number of inversion
    *
-   * @return {promise}  description
+   * @return {boolean}  true/false
    */
   function isSolvable(arr) {
     var inversionCount = arr.reduce(function (result, value, key, self) {
