@@ -16,6 +16,11 @@ var app = angular.module('slideApp', ['ngAnimate']);
  */
 app.service('gameModes', function () {
   this.modes = {
+    beginner: {
+      row: 3,
+      column: 3,
+      elasped: 360000
+    },
     amateur: {
       row: 4,
       column: 4,
@@ -332,11 +337,14 @@ app.factory('Game', ["$q", function ($q) {
   }
 
   /**
-   * funcion inversion - count number of inversion
+   * isSolvable - count number of inversion
    *
-   * @return {promise}  description
+   * @return {boolean}  true/false
    */
   function isSolvable(arr) {
+    // counting empty location from bottom.
+    var arrReverse = angular.copy(arr);
+    var emptyLoc = Math.ceil((arrReverse.indexOf(0) + 1) / this.y);
     var inversionCount = arr.reduce(function (result, value, key, self) {
       return self.slice(key).filter(function (b) {
         return b < value;
@@ -344,7 +352,18 @@ app.factory('Game', ["$q", function ($q) {
         return [value, b];
       }).concat(result);
     }, []).length;
-    return (inversionCount % 2 == 0);
+
+    // width is odd
+    if (this.x % 2 === 1) {
+      return inversionCount % 2 === 0;
+    }
+    // width is even && inversion count is odd
+    if (inversionCount % 2 === 1) {
+      // then emptyLoc from bottom would be even
+      return (emptyLoc % 2 === 0);
+    }
+    // width is even && inversion count is even && emptyLoc would be odd
+    return (emptyLoc % 2 === 1);
   }
 
   /**
