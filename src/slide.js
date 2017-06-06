@@ -122,13 +122,6 @@ app.controller('slideCtrl', function ($scope, $interval, Game, gameModes,
   };
 
   /**
-   * sosolveButton - set visibility of solve button
-   */
-  // $scope.solveButtonStatus = function () {
-  //   return Object.keys($scope.game.grid).length;
-  // };
-
-  /**
    * Keep watching the model.
    */
   $scope.$watch('game.grid', function () {
@@ -424,8 +417,4 @@ app.service('save', function () {
   this.set = set;
   this.get = get;
   this.remove = remove;
-});
-
-app.service('inversion', function () {
-
 });
