@@ -23,7 +23,10 @@
         <div class="col-md-12 text-center">
           <div ng-repeat="(key, value) in game.grid" class="row-tile">
             <span class="tile" ng-class="{'paddle': val === 0}" ng-repeat="(k, val) in value"
-              ng-click="move(key, k)">{{ val }}</span>
+              ng-click="move(key, k)" ng-drop="true" ng-drag-start="onDragStart();">
+              <span ng-show="val !== 0">{{ val }}</span>
+              <span ng-show="val === 0"> &nbsp;</span>
+            </span>
           </div>
         </div>
       </div>
@@ -57,7 +60,7 @@
           </div>
           <div class="panel panel-default">
             <div class="panel-heading">Moves: {{game.history.length}}</div>
-            <div class="panel-body">
+            <div class="panel-body history-panel">
               <p ng-repeat="move in game.history track by $index">
                 Tile {{game.move.value}} moved from {{move.old.x}} {{move.old.y}} to
                 {{move.new.pos.x}} {{move.new.pos.x}} and

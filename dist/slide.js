@@ -142,7 +142,7 @@ app.controller('slideCtrl', ["$scope", "$interval", "Game", "gameModes", "save",
   });
 
   /**
-   * On windoe close
+   * On window close
    */
   window.onbeforeunload = closeevent;
 }]);
@@ -168,8 +168,17 @@ app.factory('Game', ["$q", function ($q) {
    * @return {object}  model
    */
   function newGame() {
-    var elem = this.shuffleArray(this.elements);
-    return this.makeModel(elem);
+    var elem;
+    var solvedArray;
+    for (;;) {
+      elem = this.shuffleArray(this.elements);
+      if (this.isSolvable(elem)) {
+        solvedArray = elem;
+        break;
+      }
+    }
+
+    return this.makeModel(solvedArray);
   }
 
   /**
@@ -178,8 +187,11 @@ app.factory('Game', ["$q", function ($q) {
    * @return {object} solved mode
    */
   function solve() {
+    var arr = angular.copy(this.elements);
+    var removedItem = arr.shift();
+    arr.push(removedItem);
     this.moves = 0;
-    return this.makeModel(this.elements);
+    return this.makeModel(arr);
   }
 
   /**
@@ -320,6 +332,22 @@ app.factory('Game', ["$q", function ($q) {
   }
 
   /**
+   * funcion inversion - count number of inversion
+   *
+   * @return {promise}  description
+   */
+  function isSolvable(arr) {
+    var inversionCount = arr.reduce(function (result, value, key, self) {
+      return self.slice(key).filter(function (b) {
+        return b < value;
+      }).map(function (b) {
+        return [value, b];
+      }).concat(result);
+    }, []).length;
+    return (inversionCount % 2 == 0);
+  }
+
+  /**
    * Board - constructor
    *
    * @param  {number} x number of rows
@@ -339,6 +367,7 @@ app.factory('Game', ["$q", function ($q) {
     this.checkMove = checkMove;
     this.solve = solve;
     this.moves = 0;
+    this.isSolvable = isSolvable;
   }
 
   return Board;
@@ -379,4 +408,8 @@ app.service('save', function () {
   this.set = set;
   this.get = get;
   this.remove = remove;
+});
+
+app.service('inversion', function () {
+
 });
