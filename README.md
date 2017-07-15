@@ -1,5 +1,6 @@
 # `angular-slide-game`
 
+### [Demo](https://ayusharma.github.com/angular-slide-game/demo)
 
 
 ## Getting Started
@@ -28,6 +29,3 @@ We have preconfigured `npm` to automatically run `bower` so we can simply do:
 ```
 npm install
 ```
-
-### Demo
-https://ayusharma.github.com/angular-slide-game/demo
